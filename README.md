@@ -11,6 +11,10 @@
 - `.env.example`：环境变量示例
 - `github-pages-config.example.html`：前端 API 地址配置示例
 
+## 当前仓库
+
+[GitHub 仓库](https://github.com/jacec6949-afk/tk-studio-web)
+
 ## 重要说明
 
 GitHub Pages 只能托管静态网页，不能运行 Python、FFmpeg 或 ASR。完整功能需要把 `server.py` 部署到支持 Docker/Python 的云服务。
