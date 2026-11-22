@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tk-studio-api
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    envVars:
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: TK_MODEL
+        value: qwen2.5vl:3b
+      - key: TK_WHISPER
+        value: small
+      - key: MAX_UPLOAD_BYTES
+        value: "150000000"
