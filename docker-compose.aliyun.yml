@@ -1,0 +1,33 @@
+services:
+  tk-studio-api:
+    build: .
+    container_name: tk-studio-api
+    restart: unless-stopped
+    environment:
+      HOST: 0.0.0.0
+      PORT: 10000
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
+      MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-150000000}
+      TK_MODEL: ${TK_MODEL:-qwen2.5vl:3b}
+      TK_WHISPER: ${TK_WHISPER:-small}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      DASHSCOPE_BASE_URL: ${DASHSCOPE_BASE_URL:-}
+      TK_VISION_MODEL: ${TK_VISION_MODEL:-}
+    expose:
+      - "10000"
+    volumes:
+      - ./media:/app/media
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: tk-studio-nginx
+    restart: unless-stopped
+    depends_on:
+      - tk-studio-api
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certbot/www:/var/www/certbot:ro
+      - ./certbot/conf:/etc/letsencrypt:ro

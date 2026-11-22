@@ -43,6 +43,21 @@ GitHub Pages 只能托管静态网页，不能运行 Python、FFmpeg 或 ASR。�
 
 本包已经包含空的配置标签。未填写时，页面在同源本地服务下使用 `/api`；放到 GitHub Pages 后必须填写云端 API 地址。
 
+## 阿里云轻量服务器部署
+
+1. 创建 Ubuntu 22.04/24.04 轻量应用服务器；在阿里云防火墙开放 TCP 80、443，SSH 使用 22。
+2. 在服务器安装 Docker，克隆本仓库并进入目录。
+3. 复制 `.env.aliyun.example` 为 `.env`，填写 `ALLOWED_ORIGINS` 和必要的 AI 环境变量。
+4. 将 `nginx/conf.d/tk-studio.conf` 中的 `API_DOMAIN` 替换为你的后端域名；把域名 A 记录指向服务器公网 IP。
+5. 执行 `bash deploy-aliyun.sh`，或使用 `docker compose -f docker-compose.aliyun.yml up -d --build`。
+6. 用 `http://你的域名/api/health` 检查服务。
+7. 申请并配置 HTTPS 证书后，启用 `nginx/conf.d/tk-studio-https.conf`，然后把前端 `<meta name=\"tk-api-base\">` 改为 `https://你的域名/api`。
+
+阿里云官方参考：
+- [手动部署 Docker](https://help.aliyun.com/zh/simple-application-server/use-cases/manually-deploy-docker)
+- [轻量服务器防火墙](https://help.aliyun.com/zh/simple-application-server/user-guide/manage-the-firewall-of-a-server)
+- [免费测试 SSL 证书](https://help.aliyun.com/zh/ssl-certificate/product-overview/get-started-with-free-certificates)
+
 ## 运行能力
 
 后端安装 FFmpeg 后支持：
